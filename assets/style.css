@@ -1,0 +1,750 @@
+/* ================================================================
+   VIAÇÃO SANTA BRÍGIDA — style.css
+   Este arquivo controla TODO o visual do site: cores, fontes,
+   tamanhos, espaçamentos, animações e responsividade.
+   ================================================================ */
+
+
+/* ================================================================
+   SEÇÃO 1 — RESET
+   Remove as margens e espaçamentos padrão que cada navegador
+   aplica automaticamente. Assim o site fica igual em todos.
+   "box-sizing: border-box" faz com que padding e borda sejam
+   incluídos no tamanho total do elemento (mais fácil de calcular).
+   ================================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ================================================================
+   SEÇÃO 2 — VARIÁVEIS CSS (Custom Properties)
+   Declaradas em :root (raiz do documento) ficam disponíveis
+   em qualquer lugar do CSS com var(--nome).
+   Vantagem: mudar uma cor aqui altera em todo o site de uma vez.
+   ================================================================ */
+
+:root {
+  /* Paleta de verde (cor principal da marca) */
+  --green:        #007A33;   /* verde principal */
+  --green-dark:   #006828;   /* verde mais escuro (hover dos botões) */
+  --green-mid:    #00a845;   /* verde médio */
+  --green-light:  #e8f4ed;   /* verde bem claro (fundos de tags) */
+  --green-xlight: #f2f8f4;   /* verde quase branco (fundo do hero) */
+
+  /* Cores de superfície e fundo */
+  --bg:       #f5f7f5;  /* fundo geral da página (cinza-esverdeado claro) */
+  --surface:  #ffffff;  /* fundo dos cards e painéis (branco) */
+  --surface2: #f0f5f1;  /* fundo secundário (inputs, hover) */
+
+  /* Bordas */
+  --border:       rgba(0,0,0,0.08);       /* borda neutra padrão */
+  --border-green: rgba(0,122,51,0.18);    /* borda com tom verde */
+
+  /* Texto */
+  --text:       #111a12;  /* texto principal (quase preto) */
+  --text-mid:   #3d4d3e;  /* texto médio (cinza-esverdeado) */
+  --text-muted: #6b7d6c;  /* texto apagado (subtítulos, meta) */
+
+  /* Sombras — do mais leve ao mais forte */
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.09), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 16px 56px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.06);
+
+  /* Raios de borda (arredondamento dos cantos) */
+  --radius-sm: 10px;
+  --radius:    16px;
+  --radius-lg: 22px;
+
+  /* Largura máxima do conteúdo */
+  --max: 1120px;
+
+  /* Fontes */
+  --font:       'DM Sans', ui-sans-serif, system-ui, sans-serif;   /* fonte do corpo */
+  --font-serif: 'DM Serif Display', Georgia, serif;                 /* fonte dos títulos */
+
+  /* Cores de status das peças */
+  --good:   #1a9e5c;  /* verde = disponível */
+  --warn:   #b87a00;  /* amarelo/laranja = últimas unidades */
+  --danger: #c42b2b;  /* vermelho = vendido */
+}
+
+
+/* ================================================================
+   SEÇÃO 3 — ESTILOS GLOBAIS
+   Aplicados a elementos base como html, body, links, etc.
+   ================================================================ */
+
+/* Ativa scroll suave quando clica em links de âncora (#section) */
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);           /* usa a fonte DM Sans em todo o site */
+  font-size: 15px;                    /* tamanho base do texto */
+  color: var(--text);                 /* cor padrão do texto */
+  background: var(--bg);              /* cor de fundo da página */
+  -webkit-font-smoothing: antialiased; /* deixa as fontes mais nítidas no Mac/iOS */
+  overflow-x: hidden;                  /* esconde scroll horizontal indesejado */
+}
+
+/* Container: centraliza o conteúdo e limita a largura máxima */
+/* min() escolhe o menor valor: 1120px ou 100% da tela menos 40px de margem */
+.container {
+  width: min(var(--max), 100% - 40px);
+  margin-inline: auto; /* centraliza horizontalmente */
+}
+
+/* Remove sublinhado e herda a cor dos links */
+a { color: inherit; text-decoration: none; }
+
+
+/* ================================================================
+   SEÇÃO 4 — TOPBAR (barra superior fixa)
+   "position: sticky" faz a barra grudar no topo ao rolar a página.
+   "z-index" controla a sobreposição — quanto maior, fica na frente.
+   ================================================================ */
+
+.topbar {
+  position: sticky;   /* fica fixa no topo durante o scroll */
+  top: 0;             /* colada no topo da tela */
+  z-index: 100;       /* fica na frente de quase tudo */
+  background: var(--green);
+  box-shadow: 0 2px 16px rgba(0,80,30,0.22); /* sombra sutil abaixo */
+}
+
+/* Linha interna: alinha logo à esquerda e botões à direita */
+.topbar-inner {
+  display: flex;               /* flexbox = itens em linha */
+  align-items: center;         /* alinha verticalmente no centro */
+  justify-content: space-between; /* um item em cada extremidade */
+  gap: 16px;
+  padding: 13px 0;
+}
+
+/* Logo da marca: ícone + textos */
+.brand { display: flex; align-items: center; gap: 12px; }
+
+/* Quadrado arredondado com o ícone SVG */
+.brand-logo {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15); /* branco semitransparente */
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; /* não encolhe mesmo em telas pequenas */
+}
+
+/* Textos da marca empilhados verticalmente */
+.brand-text { display: flex; flex-direction: column; gap: 1px; }
+.brand-name { font-size: 15px; font-weight: 800; color: white; letter-spacing: -0.2px; }
+.brand-sub  { font-size: 11px; color: rgba(255,255,255,0.60); font-weight: 500; }
+
+/* Lado direito: status + botão */
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+
+/* Pílula "Catálogo ativo" */
+.status-pill {
+  display: flex; align-items: center; gap: 7px;
+  padding: 6px 12px; border-radius: 999px; /* totalmente arredondado */
+  background: rgba(255,255,255,0.12);
+  font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.9);
+}
+
+/* Ponto verde pulsante dentro da pílula */
+.status-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #6dffa0; /* verde neon */
+  box-shadow: 0 0 0 3px rgba(109,255,160,0.28); /* anel de brilho */
+  animation: blink 2s infinite; /* animação pulsante */
+}
+
+/* Animação do ponto: o anel expande e some ciclicamente */
+@keyframes blink {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(109,255,160,0.28); }
+  50%       { box-shadow: 0 0 0 6px rgba(109,255,160,0.10); }
+}
+
+/* Botão "Ver peças →" na topbar */
+.topbar-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.24);
+  color: white; font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: background .15s; /* transição suave ao passar o mouse */
+  font-family: var(--font);
+}
+.topbar-btn:hover { background: rgba(255,255,255,0.26); }
+
+/* Em telas menores, esconde a pílula de status para economizar espaço */
+@media (max-width: 640px) { .status-pill { display: none; } }
+
+
+/* ================================================================
+   SEÇÃO 5 — HERO (seção inicial de destaque)
+   "linear-gradient" cria um fundo degradê.
+   "border-bottom" separa o hero do restante da página.
+   ================================================================ */
+
+.hero {
+  padding: 52px 0 36px;
+  /* degradê: começa branco, vai para verde bem claro */
+  background: linear-gradient(155deg, #ffffff 0%, var(--green-xlight) 100%);
+  border-bottom: 1px solid var(--border-green);
+}
+
+/* Grid de duas colunas: texto à esquerda, visual à direita */
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr; /* direita um pouco mais larga */
+  gap: 52px;
+  align-items: center;
+}
+
+/* Em telas pequenas vira uma coluna só */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* Tags acima do título ("VSB · Almoxarifado" etc.) */
+.hero-eyebrow { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.eyebrow-chip {
+  display: inline-flex; align-items: center;
+  padding: 5px 12px; border-radius: 999px;
+  background: var(--green-light); border: 1px solid var(--border-green);
+  font-size: 11px; font-weight: 700; color: var(--green);
+  letter-spacing: 0.4px; text-transform: uppercase;
+}
+
+/* Título principal — usa fonte serif para elegância */
+h1 {
+  font-family: var(--font-serif);
+  /* clamp(mínimo, preferido, máximo) — tamanho responsivo */
+  font-size: clamp(30px, 4vw, 50px);
+  line-height: 1.1;
+  letter-spacing: -0.4px;
+  color: var(--text);
+  margin-bottom: 18px;
+}
+
+/* O <em> dentro do h1 fica em itálico verde */
+h1 em { font-style: italic; color: var(--green); }
+
+.hero-desc {
+  font-size: 15.5px; line-height: 1.7;
+  color: var(--text-muted); max-width: 50ch; /* ch = largura do caractere "0" */
+  margin-bottom: 28px;
+}
+
+/* Linha dos botões CTA (Call to Action) */
+.hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+
+/* ================================================================
+   SEÇÃO 6 — BOTÕES
+   Três variações: primário (verde sólido), ghost (transparente),
+   outline (borda fina) e stretch (largura total).
+   ================================================================ */
+
+/* Botão principal verde */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 22px; border-radius: var(--radius-sm);
+  background: var(--green); color: white;
+  font-size: 14px; font-weight: 700;
+  border: none; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,122,51,0.28);
+  /* transition: o que muda, duração, curva de animação */
+  transition: transform .15s, box-shadow .15s, background .15s;
+  font-family: var(--font); text-decoration: none;
+}
+.btn-primary:hover {
+  background: var(--green-dark);
+  transform: translateY(-1px); /* sobe 1px ao passar o mouse */
+  box-shadow: 0 6px 24px rgba(0,122,51,0.36);
+}
+.btn-primary:active { transform: none; } /* volta ao lugar ao clicar */
+
+/* Botão fantasma (fundo transparente, borda verde) */
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 22px; border-radius: var(--radius-sm);
+  background: transparent; color: var(--green);
+  font-size: 14px; font-weight: 700;
+  border: 1.5px solid var(--border-green); cursor: pointer;
+  transition: background .15s, border-color .15s;
+  font-family: var(--font);
+}
+.btn-ghost:hover { background: var(--green-light); border-color: var(--green); }
+
+/* Botão com borda neutra (usado no modal) */
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 18px; border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text-mid);
+  font-size: 13px; font-weight: 600;
+  border: 1.5px solid var(--border); cursor: pointer;
+  transition: background .15s; font-family: var(--font);
+}
+.btn-outline:hover { background: var(--surface2); }
+
+/* Modificador: ocupa 100% da largura disponível */
+.btn-stretch { width: 100%; justify-content: center; }
+
+
+/* ================================================================
+   SEÇÃO 7 — ESTATÍSTICAS DO HERO
+   Grid de 3 caixinhas com números de destaque.
+   ================================================================ */
+
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* três colunas iguais */
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.stat-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Variante verde: fundo verde sólido (caixa "WhatsApp") */
+.stat-box--green { background: var(--green); border-color: var(--green); }
+
+/* Número em destaque usa fonte serif para parecer mais elegante */
+.stat-num {
+  font-family: var(--font-serif); font-size: 21px;
+  color: var(--text); line-height: 1.1; margin-bottom: 4px;
+}
+
+/* Texto fica branco dentro da caixa verde */
+.stat-box--green .stat-num,
+.stat-box--green .stat-lbl { color: white; }
+
+.stat-lbl {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px;
+}
+
+/* Em telas pequenas: 2 colunas, com a última ocupando as duas */
+@media (max-width: 480px) {
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .stat-box:last-child { grid-column: 1 / -1; } /* ocupa toda a linha */
+}
+
+
+/* ================================================================
+   SEÇÃO 8 — ILUSTRAÇÃO DO ÔNIBUS
+   ================================================================ */
+
+.bus-wrap {
+  border-radius: var(--radius); overflow: hidden;
+  background: linear-gradient(135deg, var(--green-xlight), #e6f1e8);
+  border: 1px solid var(--border-green);
+  padding: 12px 8px 4px;
+}
+/* display: block remove o espaço extra abaixo de imagens/SVGs */
+.bus-svg { display: block; width: 100%; height: auto; }
+
+
+/* ================================================================
+   SEÇÃO 9 — BARRA DE FILTROS
+   "position: sticky" faz ela grudar abaixo da topbar ao rolar.
+   "top: 62px" é a altura da topbar — ajuste se mudar o tamanho dela.
+   ================================================================ */
+
+.filters-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 62px; /* gruda logo abaixo da topbar */
+  z-index: 50;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.filters-inner {
+  display: flex; align-items: center;
+  gap: 10px; padding: 12px 0; flex-wrap: wrap;
+}
+
+/* Campo de busca: ícone de lupa + input de texto */
+.search-box {
+  flex: 1; min-width: 180px; /* cresce para preencher o espaço */
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: var(--surface2);
+  transition: border-color .15s, box-shadow .15s;
+}
+
+/* Quando o campo está em foco (usuário clicou nele) */
+.search-box:focus-within {
+  border-color: var(--green); background: white;
+  box-shadow: 0 0 0 3px rgba(0,122,51,0.10); /* anel verde de foco */
+}
+
+.search-input {
+  border: none; background: transparent; outline: none;
+  font-family: var(--font); font-size: 14px; color: var(--text); width: 100%;
+}
+.search-input::placeholder { color: #9aaa9a; }
+
+/* Selects de filtro (categoria e ordenação) */
+.filter-select {
+  padding: 10px 32px 10px 14px; /* espaço à direita para a setinha */
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: var(--surface2);
+  color: var(--text); font-family: var(--font); font-size: 13px; font-weight: 600;
+  outline: none; cursor: pointer; transition: border-color .15s;
+  /* Remove a setinha padrão do navegador */
+  appearance: none;
+  /* Adiciona uma setinha personalizada via SVG inline no background */
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236b7d6c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+.filter-select:focus { border-color: var(--green); }
+.filter-select option { background: white; }
+
+/* Badge verde com o total de resultados */
+.results-badge {
+  padding: 8px 14px; border-radius: 999px;
+  background: var(--green-light); border: 1px solid var(--border-green);
+  font-size: 12px; font-weight: 700; color: var(--green); white-space: nowrap;
+}
+
+@media (max-width: 700px) { .filter-select { flex: 1; } }
+
+
+/* ================================================================
+   SEÇÃO 10 — GRID DO CATÁLOGO
+   "repeat(3, 1fr)" = 3 colunas de tamanho igual.
+   Em telas menores vai reduzindo para 2 e depois 1 coluna.
+   ================================================================ */
+
+.catalog-section { padding: 28px 0 64px; }
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 980px) { .catalog-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .catalog-grid { grid-template-columns: 1fr; } }
+
+
+/* ================================================================
+   SEÇÃO 11 — CARD DE PEÇA
+   Cada peça do catálogo é um card com foto, informações e preço.
+   ================================================================ */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden; /* garante que a foto não vaze para fora do card */
+  box-shadow: var(--shadow-sm);
+  cursor: pointer; /* mostra mãozinha ao passar o mouse */
+  display: flex; flex-direction: column; /* empilha foto + corpo */
+  /* transition: quais propriedades animam, duração, curva */
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  /* Animação de entrada: card sobe de baixo para cima */
+  animation: fadeUp .3s ease both;
+}
+
+/* Ao passar o mouse: sobe, sombra mais forte, borda esverdeada */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-green);
+}
+
+/* Animação keyframe: fadeUp = aparece vindo de baixo */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); } /* invisível, 18px abaixo */
+  to   { opacity: 1; transform: translateY(0); }    /* visível, posição normal */
+}
+
+/* Área da imagem */
+.card-img {
+  height: 200px; position: relative; /* relative = permite posicionar filhos absolute */
+  background: var(--surface2); overflow: hidden;
+}
+
+.card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover; /* preenche o espaço sem distorcer */
+  display: block;
+  transition: transform .4s ease; /* transição do zoom ao hover */
+}
+
+/* Zoom suave na foto quando o card é hoverado */
+.card:hover .card-img img { transform: scale(1.05); }
+
+/* Badge de status sobre a foto (Disponível, Últimas unidades...) */
+.card-status {
+  position: absolute; top: 10px; left: 10px; /* posicionado sobre a foto */
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px; border-radius: 999px;
+  background: rgba(255,255,255,0.93); /* branco quase opaco */
+  border: 1px solid rgba(0,0,0,0.08);
+  backdrop-filter: blur(8px); /* desfoca o que está atrás */
+  font-size: 11px; font-weight: 700; color: var(--text);
+}
+
+/* Ponto colorido indicador de status */
+.status-led { width: 7px; height: 7px; border-radius: 50%; background: var(--good); }
+.card-status.warn   .status-led { background: var(--warn); }   /* amarelo */
+.card-status.danger .status-led { background: var(--danger); } /* vermelho */
+
+/* Badge de categoria no canto superior direito da foto */
+.card-category {
+  position: absolute; top: 10px; right: 10px;
+  padding: 4px 9px; border-radius: 6px;
+  background: rgba(0,104,40,0.88); /* verde escuro semitransparente */
+  font-size: 10px; font-weight: 800; color: white;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+
+/* Corpo do card abaixo da foto */
+.card-body {
+  padding: 18px;
+  display: flex; flex-direction: column; gap: 6px;
+  flex: 1; /* ocupa o espaço restante para empurrar o footer para baixo */
+}
+
+.card-title { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.3; }
+
+/* Código da peça em fonte monospace (estilo terminal) */
+.card-code {
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  font-family: 'Courier New', monospace; letter-spacing: 0.4px;
+}
+
+.card-desc {
+  font-size: 12.5px; color: var(--text-muted); line-height: 1.55;
+  flex: 1; /* cresce para empurrar o footer para o fundo */
+}
+
+/* Rodapé do card: preço à esquerda, botão à direita */
+.card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 12px; margin-top: 6px;
+  border-top: 1px solid var(--border); /* linha divisória sutil */
+}
+
+/* Preço em fonte serif para dar destaque */
+.card-price {
+  font-family: var(--font-serif); font-size: 20px;
+  color: var(--green); letter-spacing: -0.3px;
+}
+
+/* Botão "Ver detalhes →" */
+.card-cta {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 7px 12px; border-radius: 8px;
+  background: var(--green-light); border: 1px solid var(--border-green);
+  font-size: 12px; font-weight: 700; color: var(--green);
+  transition: background .15s, color .15s;
+}
+
+/* Ao hoverar o card inteiro, o botão fica verde sólido */
+.card:hover .card-cta { background: var(--green); color: white; }
+
+
+/* ================================================================
+   SEÇÃO 12 — ESTADO VAZIO
+   Exibido quando nenhuma peça passa pelos filtros.
+   "grid-column: 1 / -1" faz o elemento ocupar todas as colunas do grid.
+   ================================================================ */
+
+.empty-state {
+  grid-column: 1 / -1; /* ocupa toda a largura do grid */
+  text-align: center;
+  padding: 80px 20px;
+}
+.empty-state h3 { font-size: 20px; margin-bottom: 8px; color: var(--text-mid); }
+.empty-state p  { color: var(--text-muted); font-size: 14px; }
+
+
+/* ================================================================
+   SEÇÃO 13 — MODAL (janela de detalhes)
+   "position: fixed" fixa na tela mesmo ao rolar.
+   "inset: 0" equivale a top/right/bottom/left: 0 (cobre tudo).
+   "backdrop-filter: blur" desfoca o conteúdo atrás.
+   ================================================================ */
+
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.42); /* fundo escuro semitransparente */
+  backdrop-filter: blur(5px);   /* desfoque no fundo */
+  display: none; /* escondido por padrão */
+  align-items: center; justify-content: center;
+  padding: 20px; z-index: 200; /* fica na frente de tudo */
+}
+
+/* Classe adicionada via JS para mostrar o modal */
+.modal-overlay.open { display: flex; }
+
+/* Caixa branca do modal */
+.modal-box {
+  position: relative;
+  width: min(860px, 100%); /* no máximo 860px, mas cabe em telas menores */
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  animation: modalIn .22s ease; /* aparece com animação */
+}
+
+/* Animação de entrada do modal: cresce e sobe levemente */
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Botão X de fechar no canto superior direito */
+.modal-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 34px; height: 34px; border-radius: 8px;
+  background: var(--surface2); border: 1px solid var(--border);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  z-index: 10; transition: background .15s;
+}
+.modal-close:hover { background: #dce8dc; }
+
+/* Layout interno do modal: foto à esquerda, info à direita */
+.modal-layout { display: grid; grid-template-columns: 1fr 1fr; }
+
+/* Em telas menores, empilha verticalmente */
+@media (max-width: 720px) { .modal-layout { grid-template-columns: 1fr; } }
+
+/* Coluna da foto */
+.modal-img-col { background: var(--surface2); position: relative; min-height: 280px; }
+.modal-img-col img {
+  width: 100%; height: 100%;
+  min-height: 280px; max-height: 480px;
+  object-fit: cover; display: block;
+}
+
+/* Badge de status sobre a foto do modal */
+.modal-status-badge {
+  position: absolute; top: 14px; left: 14px;
+  padding: 6px 12px; border-radius: 999px;
+  background: rgba(255,255,255,0.93); backdrop-filter: blur(8px);
+  font-size: 12px; font-weight: 700; color: var(--text);
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+/* Coluna de informações */
+.modal-info-col {
+  padding: 28px 26px;
+  display: flex; flex-direction: column; gap: 14px;
+  overflow-y: auto; /* scroll se o conteúdo for maior que a altura */
+  max-height: 480px;
+}
+
+/* Título do modal em fonte serif */
+.modal-title {
+  font-family: var(--font-serif); font-size: 24px;
+  line-height: 1.2; color: var(--text);
+}
+
+/* Preço grande e verde */
+.modal-price {
+  font-family: var(--font-serif); font-size: 34px;
+  color: var(--green); letter-spacing: -0.5px;
+}
+
+/* Tags (chips) com categoria, código e status */
+.modal-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.modal-chip {
+  padding: 5px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 600;
+  background: var(--surface2); border: 1px solid var(--border); color: var(--text-mid);
+}
+/* Chip verde para a categoria */
+.modal-chip.green {
+  background: var(--green-light); border-color: var(--border-green); color: var(--green);
+}
+
+/* Linha divisória horizontal */
+.modal-rule { height: 1px; background: var(--border); }
+
+/* Rótulo "DESCRIÇÃO" em letras pequenas maiúsculas */
+.modal-label {
+  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.6px;
+  margin-bottom: -8px; /* aproxima do texto que vem abaixo */
+}
+
+.modal-desc { font-size: 14px; line-height: 1.7; color: var(--text-mid); }
+
+/* Botões no rodapé do modal — empilhados verticalmente */
+.modal-btns {
+  display: flex; flex-direction: column; gap: 8px;
+  margin-top: auto; /* empurra para o fundo da coluna */
+}
+
+
+/* ================================================================
+   SEÇÃO 14 — BOTÃO FLUTUANTE WHATSAPP (FAB)
+   FAB = Floating Action Button
+   Fica fixo no canto inferior direito da tela.
+   ================================================================ */
+
+.fab {
+  position: fixed; right: 20px; bottom: 20px; z-index: 150;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 20px; border-radius: 999px;
+  background: var(--green); color: white;
+  font-size: 14px; font-weight: 800;
+  box-shadow: 0 8px 28px rgba(0,122,51,0.38);
+  transition: transform .15s, box-shadow .15s;
+  font-family: var(--font);
+}
+.fab:hover {
+  transform: translateY(-2px); /* sobe 2px */
+  box-shadow: 0 12px 36px rgba(0,122,51,0.48);
+}
+
+/* Em telas muito pequenas: esconde o texto e vira um círculo */
+@media (max-width: 480px) {
+  .fab span { display: none; }
+  .fab { padding: 14px; border-radius: 50%; width: 52px; height: 52px; }
+}
+
+
+/* ================================================================
+   SEÇÃO 15 — FOOTER (rodapé)
+   ================================================================ */
+
+.site-footer { background: var(--green); padding: 22px 0; }
+
+/* Flex com espaçamento entre os lados */
+.footer-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+
+.footer-left { display: flex; align-items: center; gap: 12px; }
+.footer-name { font-size: 14px; font-weight: 800; color: white; }
+.footer-sub  { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 1px; }
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.50); }
+
+
+/* ================================================================
+   SEÇÃO 16 — RESPONSIVIDADE FINAL
+   Ajustes extras para telas muito pequenas (celular)
+   ================================================================ */
+
+@media (max-width: 480px) {
+  h1 { font-size: 28px; }
+  .hero { padding: 34px 0 24px; }
+}

@@ -1,0 +1,422 @@
+<!doctype html>
+<!--
+  index.html — Viação Santa Brígida | Catálogo de Peças
+  =====================================================
+  Este é o arquivo principal do site. Ele define a ESTRUTURA
+  da página (o que existe e em que ordem), enquanto:
+    - style.css  → cuida da aparência (cores, tamanhos, layout)
+    - script.js  → cuida do comportamento (filtros, modal, WhatsApp)
+-->
+<html lang="pt-BR">
+<!-- lang="pt-BR" ajuda navegadores e leitores de tela a
+     identificar o idioma correto da página -->
+
+<head>
+  <!-- HEAD: informações sobre a página (não aparece na tela) -->
+
+  <!-- Define que o arquivo usa UTF-8 (suporte a acentos e ç) -->
+  <meta charset="utf-8" />
+
+  <!-- Faz a página respeitar o tamanho da tela do celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Título que aparece na aba do navegador -->
+  <title>Viação Santa Brígida | Catálogo de Peças</title>
+
+  <!-- Descrição para motores de busca (Google, etc.) -->
+  <meta name="description" content="Catálogo de peças sem uso disponíveis para venda — Viação Santa Brígida." />
+
+  <!-- Pré-conecta ao Google Fonts para carregar mais rápido -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Carrega as fontes DM Sans (texto) e DM Serif Display (títulos) -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <!-- Conecta o arquivo de estilos CSS (aparência do site) -->
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body>
+  <!-- BODY: tudo que o usuário vê na tela -->
+
+  <!-- ============================================================
+       TOPBAR — Barra superior fixa
+       Fica visível o tempo todo enquanto o usuário rola a página.
+       Contém: logo da empresa + indicador de status + botão.
+       ============================================================ -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+
+      <!-- Logo: ícone SVG + nome + subtítulo -->
+      <div class="brand">
+        <!-- aria-hidden="true" esconde o SVG de leitores de tela
+             (decorativo, não precisa ser lido em voz alta) -->
+        <div class="brand-logo" aria-hidden="true">
+          <!-- SVG = gráfico vetorial desenhado com código -->
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M3 14 Q6 7 10 8 Q14 9 17 6" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <circle cx="10" cy="14" r="2.5" fill="white" opacity="0.9"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Viação Santa Brígida</span>
+          <span class="brand-sub">Catálogo de Peças</span>
+        </div>
+      </div>
+
+      <!-- Lado direito: pílula de status + botão de scroll -->
+      <div class="topbar-right">
+        <!-- Pílula "Catálogo ativo" com ponto verde pulsante -->
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          Catálogo ativo
+        </div>
+        <!-- Botão que rola a página até o catálogo (via JavaScript) -->
+        <button class="topbar-btn" id="btnScrollCatalog">Ver peças →</button>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- MAIN: conteúdo principal da página -->
+  <main>
+
+    <!-- ============================================================
+         HERO — Seção de destaque inicial
+         Dividida em dois lados:
+           Esquerda: título, descrição e botões
+           Direita: stats (números) + ilustração do ônibus
+         ============================================================ -->
+    <section class="hero">
+      <div class="container hero-inner">
+
+        <!-- ── Lado esquerdo: texto e chamada para ação ── -->
+        <div class="hero-text">
+
+          <!-- Tags acima do título (eyebrow = "sobrancelha" do título) -->
+          <div class="hero-eyebrow">
+            <span class="eyebrow-chip">VSB · Almoxarifado</span>
+            <!-- &amp; é o código HTML para o símbolo & -->
+            <span class="eyebrow-chip">Elétrica &amp; Mecânica</span>
+          </div>
+
+          <!-- Título principal — <em> coloca em itálico e verde -->
+          <h1>Peças sem uso,<br><em>prontas para vender.</em></h1>
+
+          <!-- Descrição resumida do catálogo -->
+          <p class="hero-desc">
+            Catálogo da Viação Santa Brígida com peças retiradas de equipamentos fora de operação.
+            Fotos reais, preços definidos e contato direto via WhatsApp em um clique.
+          </p>
+
+          <!-- Botões de ação: um abre o catálogo, outro o WhatsApp -->
+          <div class="hero-ctas">
+            <!-- id= é o "nome" do elemento, usado pelo JavaScript para encontrá-lo -->
+            <button class="btn-primary" id="btnHeroCatalog">
+              <!-- SVG do ícone de lista -->
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                <path d="M1.5 3.5h12M1.5 7.5h8M1.5 11.5h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              Ver catálogo
+            </button>
+
+            <!-- Link do WhatsApp — href será preenchido pelo JavaScript -->
+            <!-- target="_blank" abre em nova aba; rel="noopener" é segurança -->
+            <a class="btn-ghost" id="waHero" href="#" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                <path d="M12.8 2.2A7.3 7.3 0 001.5 10.5L.5 14.5l4.1-.9A7.3 7.3 0 1012.8 2.2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              </svg>
+              WhatsApp
+            </a>
+          </div>
+        </div><!-- fim hero-text -->
+
+
+        <!-- ── Lado direito: estatísticas + ônibus ── -->
+        <div class="hero-right">
+
+          <!-- 3 caixinhas com números de destaque -->
+          <!-- Os valores são preenchidos pelo JavaScript via id= -->
+          <div class="stats-row">
+            <div class="stat-box">
+              <div class="stat-num" id="statCount">0</div>
+              <div class="stat-lbl">Peças listadas</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" id="statAvg">—</div>
+              <div class="stat-lbl">Preço médio</div>
+            </div>
+            <!-- stat-box--green = variante com fundo verde -->
+            <div class="stat-box stat-box--green">
+              <div class="stat-num">WhatsApp</div>
+              <div class="stat-lbl">Contato em 1 clique</div>
+            </div>
+          </div>
+
+          <!-- Ilustração do ônibus em SVG -->
+          <!-- aria-hidden="true" pois é decorativo -->
+          <div class="bus-wrap" aria-hidden="true">
+            <svg viewBox="0 0 860 195" xmlns="http://www.w3.org/2000/svg" class="bus-svg">
+              <!-- Asfalto -->
+              <rect x="0" y="158" width="860" height="37" fill="#cdd6cd"/>
+              <rect x="0" y="158" width="860" height="3" fill="#b4c0b4"/>
+              <!-- Marcações da pista -->
+              <rect x="50"  y="168" width="70" height="4" rx="2" fill="white" opacity="0.45"/>
+              <rect x="185" y="168" width="70" height="4" rx="2" fill="white" opacity="0.3"/>
+              <rect x="320" y="168" width="70" height="4" rx="2" fill="white" opacity="0.45"/>
+              <rect x="455" y="168" width="70" height="4" rx="2" fill="white" opacity="0.3"/>
+              <rect x="590" y="168" width="70" height="4" rx="2" fill="white" opacity="0.45"/>
+              <rect x="730" y="168" width="70" height="4" rx="2" fill="white" opacity="0.3"/>
+              <!-- Sombra do ônibus no chão -->
+              <ellipse cx="430" cy="163" rx="350" ry="9" fill="rgba(0,0,0,0.11)"/>
+              <!-- Carroceria do ônibus -->
+              <rect x="28" y="28" width="804" height="132" rx="20" fill="#edf4ed" stroke="#c0d4c0" stroke-width="1.5"/>
+              <!-- Reflexo no teto (gradiente) -->
+              <rect x="28" y="28" width="804" height="55" rx="20" fill="url(#hg)"/>
+              <!-- Faixa verde característica -->
+              <rect x="28" y="108" width="804" height="30" fill="#007A33"/>
+              <!-- Faixa branca abaixo -->
+              <rect x="28" y="138" width="804" height="7" fill="rgba(255,255,255,0.7)"/>
+              <!-- Parte frontal do ônibus -->
+              <rect x="28" y="28" width="46" height="132" rx="16" fill="#e2ede2" stroke="#c0d4c0" stroke-width="1"/>
+              <!-- Janelas -->
+              <g fill="rgba(172,210,192,0.55)" stroke="#9fc4b0" stroke-width="1">
+                <rect x="88"  y="44" width="74" height="50" rx="8"/>
+                <rect x="172" y="44" width="74" height="50" rx="8"/>
+                <rect x="256" y="44" width="74" height="50" rx="8"/>
+                <rect x="340" y="44" width="74" height="50" rx="8"/>
+                <rect x="424" y="44" width="74" height="50" rx="8"/>
+                <rect x="508" y="44" width="74" height="50" rx="8"/>
+                <rect x="592" y="44" width="74" height="50" rx="8"/>
+              </g>
+              <!-- Reflexo nas janelas -->
+              <g fill="rgba(255,255,255,0.22)">
+                <rect x="92"  y="47" width="28" height="16" rx="4"/>
+                <rect x="176" y="47" width="28" height="16" rx="4"/>
+                <rect x="260" y="47" width="28" height="16" rx="4"/>
+                <rect x="344" y="47" width="28" height="16" rx="4"/>
+                <rect x="428" y="47" width="28" height="16" rx="4"/>
+                <rect x="512" y="47" width="28" height="16" rx="4"/>
+                <rect x="596" y="47" width="28" height="16" rx="4"/>
+              </g>
+              <!-- Porta do ônibus -->
+              <rect x="694" y="42" width="46" height="96" rx="10" fill="rgba(155,198,175,0.38)" stroke="#9fc4b0" stroke-width="1"/>
+              <line x1="717" y1="46" x2="717" y2="134" stroke="#9fc4b0" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
+              <!-- Farol frontal (amarelo) -->
+              <rect x="36" y="68" width="11" height="22" rx="4" fill="#fffde0" opacity="0.85"/>
+              <!-- Farol traseiro (amarelo mais quente) -->
+              <rect x="750" y="66" width="13" height="26" rx="4" fill="#ffcc44" opacity="0.85"/>
+              <!-- Nome da empresa na faixa verde -->
+              <text x="88" y="128" font-family="DM Sans, sans-serif" font-weight="800" font-size="14"
+                fill="rgba(255,255,255,0.95)" letter-spacing="1.2">VIAÇÃO SANTA BRÍGIDA</text>
+              <!-- Roda traseira -->
+              <circle cx="196" cy="163" r="26" fill="#222"/>
+              <circle cx="196" cy="163" r="17" fill="#3a3a3a" stroke="#555" stroke-width="2"/>
+              <circle cx="196" cy="163" r="6"  fill="#777"/>
+              <!-- Roda dianteira -->
+              <circle cx="650" cy="163" r="26" fill="#222"/>
+              <circle cx="650" cy="163" r="17" fill="#3a3a3a" stroke="#555" stroke-width="2"/>
+              <circle cx="650" cy="163" r="6"  fill="#777"/>
+              <!-- Definição do gradiente usado no reflexo do teto -->
+              <defs>
+                <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+                  <stop offset="0%"   stop-color="rgba(255,255,255,0.45)"/>
+                  <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div><!-- fim bus-wrap -->
+
+        </div><!-- fim hero-right -->
+
+      </div><!-- fim container hero-inner -->
+    </section><!-- fim hero -->
+
+
+    <!-- ============================================================
+         BARRA DE FILTROS — Fixa abaixo da topbar ao rolar
+         Contém: busca por texto, filtro de categoria e ordenação.
+         id="catalog" é o alvo do scroll dos botões "Ver catálogo"
+         ============================================================ -->
+    <div class="filters-bar" id="catalog">
+      <div class="container filters-inner">
+
+        <!-- Campo de busca com ícone de lupa -->
+        <div class="search-box">
+          <!-- Ícone SVG de lupa (decorativo) -->
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <circle cx="6" cy="6" r="4.2" stroke="#888" stroke-width="1.5"/>
+            <path d="M9.5 9.5L13 13" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <!-- Campo de texto da busca — JavaScript escuta este campo -->
+          <input class="search-input" id="q"
+            placeholder="Buscar por nome, código ou categoria…"
+            autocomplete="off"/>
+          <!-- autocomplete="off" desliga o preenchimento automático do navegador -->
+        </div>
+
+        <!-- Filtro de categoria -->
+        <select class="filter-select" id="cat">
+          <option value="all">Todas categorias</option>
+          <option value="Elétrica">Elétrica</option>
+          <option value="Mecânica">Mecânica</option>
+          <option value="Automação">Automação</option>
+          <option value="Acessórios">Acessórios</option>
+        </select>
+
+        <!-- Filtro de ordenação -->
+        <select class="filter-select" id="sort">
+          <option value="featured">Ordenar: destaque</option>
+          <option value="low">Menor preço</option>
+          <option value="high">Maior preço</option>
+          <option value="az">A → Z</option>
+        </select>
+
+        <!-- Badge com contagem de resultados — preenchido pelo JavaScript -->
+        <div class="results-badge"><span id="resultsCount">0</span> peças</div>
+
+      </div>
+    </div><!-- fim filters-bar -->
+
+
+    <!-- ============================================================
+         CATÁLOGO — Grid onde os cards das peças são inseridos
+         Os cards são criados e inseridos aqui pelo JavaScript.
+         A div#grid começa vazia — o JS preenche dinamicamente.
+         ============================================================ -->
+    <section class="catalog-section">
+      <div class="container">
+        <!-- id="grid" é onde o JavaScript insere os cards das peças -->
+        <div class="catalog-grid" id="grid">
+          <!-- Os cards são inseridos aqui dinamicamente pelo script.js -->
+        </div>
+      </div>
+    </section>
+
+  </main><!-- fim main -->
+
+
+  <!-- ============================================================
+       FOOTER — Rodapé da página
+       ============================================================ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+
+      <!-- Lado esquerdo: logo + nome -->
+      <div class="footer-left">
+        <div class="brand-logo" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <path d="M3 14 Q6 7 10 8 Q14 9 17 6" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <circle cx="10" cy="14" r="2.5" fill="white" opacity="0.9"/>
+          </svg>
+        </div>
+        <div>
+          <div class="footer-name">Viação Santa Brígida</div>
+          <div class="footer-sub">Catálogo interno de peças — venda interna</div>
+        </div>
+      </div>
+
+      <!-- Lado direito: copyright -->
+      <div class="footer-copy">© 2026 Guilherme Oliveira · Todos os direitos reservados.</div>
+
+    </div>
+  </footer>
+
+
+  <!-- ============================================================
+       MODAL — Janela de detalhes da peça
+       Fica escondida por padrão (display: none no CSS).
+       O JavaScript exibe ela quando o usuário clica em um card.
+
+       aria-hidden="true" → oculto de leitores de tela por padrão
+       role="dialog"      → indica que é uma janela de diálogo
+       aria-modal="true"  → diz que o conteúdo fora está bloqueado
+       ============================================================ -->
+  <div class="modal-overlay" id="backdrop" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="Detalhes da peça">
+
+      <!-- Botão de fechar (X) no canto superior direito -->
+      <button class="modal-close" id="btnClose" aria-label="Fechar">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <!-- Layout interno: foto à esquerda + info à direita -->
+      <div class="modal-layout">
+
+        <!-- Coluna esquerda: foto + badge de status -->
+        <div class="modal-img-col">
+          <!-- src e alt são preenchidos pelo JavaScript ao abrir o modal -->
+          <img id="mImg" alt="Foto da peça"/>
+          <!-- Badge de status sobre a foto -->
+          <div class="modal-status-badge" id="mStatusBadge"></div>
+        </div>
+
+        <!-- Coluna direita: todas as informações da peça -->
+        <div class="modal-info-col">
+          <!-- Título — preenchido pelo JS -->
+          <h2 class="modal-title" id="mTitle"></h2>
+          <!-- Preço — preenchido pelo JS -->
+          <div class="modal-price" id="mPrice"></div>
+          <!-- Tags (categoria, código, status) — preenchidas pelo JS -->
+          <div class="modal-chips" id="mChips"></div>
+          <!-- Linha divisória -->
+          <div class="modal-rule"></div>
+          <!-- Rótulo da descrição -->
+          <p class="modal-label">Descrição</p>
+          <!-- Texto completo da descrição — preenchido pelo JS -->
+          <p class="modal-desc" id="mDesc"></p>
+          <!-- Linha divisória -->
+          <div class="modal-rule"></div>
+          <!-- Botões de ação -->
+          <div class="modal-btns">
+            <!-- Link do WhatsApp — href preenchido pelo JS com dados da peça -->
+            <a class="btn-primary btn-stretch" id="mBuy" href="#" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                <path d="M12.8 2.2A7.3 7.3 0 001.5 10.5L.5 14.5l4.1-.9A7.3 7.3 0 1012.8 2.2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              </svg>
+              Tenho interesse — WhatsApp
+            </a>
+            <!-- Botão de copiar informações -->
+            <button class="btn-outline" id="mCopy">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <rect x="4" y="4" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M2 10V2h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              Copiar
+            </button>
+          </div>
+        </div><!-- fim modal-info-col -->
+
+      </div><!-- fim modal-layout -->
+    </div><!-- fim modal-box -->
+  </div><!-- fim modal-overlay -->
+
+
+  <!-- ============================================================
+       BOTÃO FLUTUANTE WHATSAPP (FAB)
+       Fica fixo no canto inferior direito da tela.
+       O href é preenchido pelo JavaScript.
+       ============================================================ -->
+  <a class="fab" id="waFloat" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <path d="M18.5 3.5A10.7 10.7 0 002 15.2L1 21l5.9-1.5A10.7 10.7 0 1018.5 3.5z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M7.5 8.5c.2-.5.8-1.5 1.5-1.5.3 0 .6.1.8.4l.9 1.9c.1.3 0 .5-.2.7l-.7.7c.5.9 1.1 1.6 2 2l.7-.7c.2-.2.4-.3.7-.2l1.9.8c.3.1.4.5.4.8C15.5 14 14.5 14.5 14 14.7" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+    <span>WhatsApp</span>
+  </a>
+
+
+  <!-- ============================================================
+       SCRIPT
+       O JavaScript é carregado NO FINAL do body (não no <head>).
+       Isso garante que todos os elementos HTML já existam na página
+       antes de o JS tentar encontrá-los com getElementById().
+       ============================================================ -->
+  <script src="assets/script.js"></script>
+
+</body>
+</html>
